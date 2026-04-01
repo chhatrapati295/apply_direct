@@ -2,20 +2,12 @@ import { useEffect, useEffectEvent, useState } from 'react'
 import type { FormEvent } from 'react'
 import './App.css'
 import { ToastViewport, type ToastState } from './components/ToastViewport'
-import {
-  appConfig,
-  hasRequiredEmailJsConfig,
-} from './config/appConfig'
+import { hasRequiredEmailJsConfig } from './config/appConfig'
 import { sendApplicationEmail } from './lib/email'
-import { loadResumeAttachment } from './lib/resume'
 
 function App() {
   const [recipientEmail, setRecipientEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [resumeReady, setResumeReady] = useState(false)
-  const [resumeStatusText, setResumeStatusText] = useState(
-    `Preparing ${appConfig.resume.fileName}...`,
-  )
   const [toast, setToast] = useState<ToastState | null>(null)
 
   const dismissToast = useEffectEvent(() => {
@@ -36,37 +28,8 @@ function App() {
     }
   }, [toast])
 
-  useEffect(() => {
-    let isMounted = true
-
-    loadResumeAttachment(appConfig.resume.path)
-      .then((attachment) => {
-        if (!isMounted) {
-          return
-        }
-
-        setResumeReady(true)
-        setResumeStatusText(`${attachment.fileName} is attached by default.`)
-      })
-      .catch(() => {
-        if (!isMounted) {
-          return
-        }
-
-        setResumeReady(false)
-        setResumeStatusText(
-          `Resume could not be loaded from ${appConfig.resume.path}.`,
-        )
-      })
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
-
   const canSubmit =
     hasRequiredEmailJsConfig &&
-    resumeReady &&
     !isSubmitting &&
     recipientEmail.trim().length > 0
 
@@ -93,15 +56,6 @@ function App() {
       return
     }
 
-    if (!resumeReady) {
-      setToast({
-        variant: 'error',
-        title: 'Resume unavailable',
-        message: resumeStatusText,
-      })
-      return
-    }
-
     setIsSubmitting(true)
 
     try {
@@ -110,7 +64,7 @@ function App() {
       setToast({
         variant: 'success',
         title: 'Email sent',
-        message: `Your application package was sent to ${trimmedEmail}.`,
+        message: `Your application email was sent to ${trimmedEmail}.`,
       })
     } catch (error) {
       setToast({
@@ -128,18 +82,13 @@ function App() {
 
   return (
     <main className="app-shell">
-
       <section className="composer-card">
         <div className="composer-topline">
           <div>
             <p className="section-label">Application Sender</p>
             <h2>One input. One click.</h2>
           </div>
-          <span
-            className={`status-pill ${resumeReady ? 'is-ready' : 'is-warning'}`}
-          >
-            {resumeReady ? 'Resume ready' : 'Resume issue'}
-          </span>
+          <span className="status-pill is-ready">Email ready</span>
         </div>
 
         <form className="application-form" onSubmit={handleSubmit}>
@@ -160,7 +109,6 @@ function App() {
             {isSubmitting ? 'Sending application...' : 'Send application email'}
           </button>
         </form>
-
       </section>
 
       <ToastViewport toast={toast} onDismiss={() => setToast(null)} />
