@@ -10,7 +10,6 @@ Apply Direct is a Vite + React + TypeScript web app for sending your EmailJS tem
 - Automatic resume loading from the bundled `resume_chhatrapati.pdf`
 - Success and failure toasts
 - Mobile responsive modern UI
-- PWA support with offline-ready assets
 
 ## Setup
 
