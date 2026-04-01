@@ -29,6 +29,7 @@ function App() {
   }, [toast])
 
   const canSubmit =
+    hasRequiredEmailJsConfig &&
     !isSubmitting &&
     recipientEmail.trim().length > 0
 
