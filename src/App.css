@@ -129,14 +129,10 @@
   font-weight: 700;
 }
 
-.input-shell {
-  position: relative;
-}
-
 .field input {
   min-height: 3.7rem;
   width: 100%;
-  padding: 0 5.9rem 0 1rem;
+  padding: 0 1rem;
   border: 1px solid rgba(15, 23, 42, 0.1);
   border-radius: 18px;
   background: #fff;
@@ -157,32 +153,6 @@
   border-color: rgba(37, 99, 235, 0.45);
   box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.12);
   transform: translateY(-1px);
-}
-
-.paste-button {
-  position: absolute;
-  top: 50%;
-  right: 0.65rem;
-  transform: translateY(-50%);
-  min-height: 2.4rem;
-  padding: 0 0.85rem;
-  border: 0;
-  border-radius: 999px;
-  background: rgba(37, 99, 235, 0.1);
-  color: #1d4ed8;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.paste-button:hover {
-  background: rgba(37, 99, 235, 0.16);
-}
-
-.paste-button:focus-visible {
-  outline: 2px solid rgba(37, 99, 235, 0.3);
-  outline-offset: 2px;
 }
 
 .submit-button {
